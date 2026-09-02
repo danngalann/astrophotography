@@ -6,7 +6,8 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "media:build": "node scripts/process-media.mjs"
   },
   "dependencies": {
     "next": "16.3.4",

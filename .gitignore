@@ -39,3 +39,6 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# Original media stays outside Git; only generated web assets are committed.
+/media-originals/
