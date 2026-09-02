@@ -10,6 +10,10 @@ export default function Home() {
       <section className="hero">
         <picture className="hero-image">
           <source
+            srcSet="/media/images/milky-way/1280.webp"
+            media="(max-width: 620px) and (orientation: portrait)"
+          />
+          <source
             srcSet="/media/images/veil-nebula/2048.webp"
             media="(min-width: 900px)"
           />
