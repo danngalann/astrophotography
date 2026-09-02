@@ -495,20 +495,6 @@ const editorial: EditorialItem[] = [
     },
   },
   {
-    slug: "horsehead-first-session",
-    kind: "image",
-    category: "Deep sky",
-    title: "Horsehead Nebula, First Session",
-    description:
-      "The first session on Barnard 33, preceding the deeper final version captured one week later.",
-    alt: "An early image of the Horsehead Nebula",
-    capturedAt: "2025-01-24",
-    details: {
-      target: "Barnard 33 · Orion",
-      location: "Near Olivella Observatory, Spain",
-    },
-  },
-  {
     slug: "scope-tracking-timelapse",
     kind: "video",
     category: "Motion",
