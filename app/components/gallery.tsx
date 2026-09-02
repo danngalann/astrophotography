@@ -3,7 +3,7 @@
 /* eslint-disable @next/next/no-img-element -- pre-generated responsive assets avoid runtime image transforms */
 
 import dynamic from "next/dynamic";
-import { useEffect, useMemo, useRef, useState } from "react";
+import { Fragment, useEffect, useMemo, useRef, useState } from "react";
 import type { MediaCategory, MediaItem } from "@/content/media";
 
 const PanoramaViewer = dynamic(() => import("./panorama-viewer"), {
@@ -70,7 +70,7 @@ function VideoPreview({ item }: { item: MediaItem }) {
       observer = new IntersectionObserver(
         ([entry]) => {
           setNearViewport(entry.isIntersecting);
-          if (entry.isIntersecting) setLoadVideo(true);
+          setLoadVideo(entry.isIntersecting);
         },
         { rootMargin: "300px 0px" },
       );
@@ -260,7 +260,13 @@ function MediaDialog({
       >
         <span aria-hidden="true">×</span>
       </button>
-      <div className="lightbox-layout">
+      <div
+        className={
+          item.width < item.height && item.kind !== "panorama"
+            ? "lightbox-layout lightbox-layout-portrait"
+            : "lightbox-layout"
+        }
+      >
         <div className="lightbox-stage">
           <LightboxMedia item={item} />
         </div>
@@ -320,29 +326,44 @@ export default function Gallery({ items }: { items: MediaItem[] }) {
 
       <div className="gallery-grid">
         {visibleItems.map((item, index) => (
-          <button
-            className="gallery-card"
-            type="button"
-            key={item.slug}
-            onClick={() => setSelectedSlug(item.slug)}
-            style={{ animationDelay: `${Math.min(index * 45, 450)}ms` }}
-            aria-label={`Open ${item.title}`}
-          >
-            <MediaPreview item={item} />
-            <span className="card-shade" />
-            <span className="card-copy">
-              <span className="card-category">
-                {item.category}
-                {item.capturedAt && ` · ${item.capturedAt.slice(0, 4)}`}
-              </span>
-              <strong>{item.title}</strong>
-            </span>
-            {item.kind !== "image" && (
-              <span className="media-badge">
-                {item.kind === "panorama" ? "360°" : "Play"}
-              </span>
+          <Fragment key={item.slug}>
+            {(index === 0 ||
+              item.capturedAt?.slice(0, 4) !==
+                visibleItems[index - 1].capturedAt?.slice(0, 4)) && (
+              <div className="year-marker">
+                <span>
+                  {item.capturedAt?.slice(0, 4) ?? "Date unknown"}
+                </span>
+              </div>
             )}
-          </button>
+            <button
+              className="gallery-card"
+              type="button"
+              onClick={() => setSelectedSlug(item.slug)}
+              style={{
+                animationDelay: `${Math.min(index * 45, 450)}ms`,
+                aspectRatio: `${item.width} / ${item.height}`,
+                flexBasis: `${Math.round((item.width / item.height) * 400)}px`,
+                flexGrow: item.width / item.height,
+              }}
+              aria-label={`Open ${item.title}`}
+            >
+              <MediaPreview item={item} />
+              <span className="card-shade" />
+              <span className="card-copy">
+                <span className="card-category">
+                  {item.category}
+                  {item.capturedAt && ` · ${item.capturedAt.slice(0, 4)}`}
+                </span>
+                <strong>{item.title}</strong>
+              </span>
+              {item.kind !== "image" && (
+                <span className="media-badge">
+                  {item.kind === "panorama" ? "360°" : "Play"}
+                </span>
+              )}
+            </button>
+          </Fragment>
         ))}
       </div>
 

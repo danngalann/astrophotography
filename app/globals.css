@@ -211,7 +211,7 @@ a {
   gap: 48px;
   align-items: end;
   margin: 0 auto 64px;
-  max-width: 1500px;
+  max-width: 1800px;
 }
 
 .section-heading h2,
@@ -233,7 +233,7 @@ a {
 
 .gallery-toolbar {
   display: flex;
-  max-width: 1500px;
+  max-width: 1800px;
   margin: 0 auto 32px;
   gap: 8px;
   overflow-x: auto;
@@ -265,35 +265,64 @@ a {
 }
 
 .gallery-grid {
-  max-width: 1500px;
+  display: flex;
+  max-width: 1800px;
   margin: 0 auto;
-  columns: 3 340px;
-  column-gap: 14px;
+  flex-wrap: wrap;
+  gap: 14px;
+}
+
+.gallery-grid::after {
+  content: "";
+  flex-basis: 400px;
+  flex-grow: 999;
+}
+
+.year-marker {
+  display: flex;
+  flex: 0 0 100%;
+  align-items: center;
+  gap: 24px;
+  margin: 50px 0 8px;
+  color: var(--accent);
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: clamp(2rem, 3vw, 3.4rem);
+  letter-spacing: -0.04em;
+}
+
+.year-marker:first-child {
+  margin-top: 8px;
+}
+
+.year-marker::after {
+  height: 1px;
+  flex: 1;
+  background: var(--line);
+  content: "";
 }
 
 .gallery-card {
   position: relative;
   display: block;
-  width: 100%;
-  margin: 0 0 14px;
+  min-width: 180px;
   overflow: hidden;
   border: 0;
   background: #111219;
   cursor: zoom-in;
-  break-inside: avoid;
   animation: card-in 600ms ease-out both;
 }
 
 .media-preview {
   position: relative;
   display: block;
+  width: 100%;
+  height: 100%;
 }
 
 .gallery-card img {
   display: block;
   width: 100%;
-  height: auto;
-  min-height: 220px;
+  height: 100%;
   background-color: #111219;
   background-position: center;
   background-size: cover;
@@ -426,6 +455,24 @@ a {
   height: 100%;
   min-height: 0;
   place-items: center;
+}
+
+.lightbox-layout-portrait .lightbox-stage {
+  position: fixed;
+  inset: 32px;
+  width: auto;
+  height: auto;
+  pointer-events: none;
+}
+
+.lightbox-layout-portrait .lightbox-stage > * {
+  pointer-events: auto;
+}
+
+.lightbox-layout-portrait .lightbox-info {
+  position: relative;
+  z-index: 1;
+  grid-column: 2;
 }
 
 .lightbox-image,
@@ -642,6 +689,19 @@ footer {
   }
 }
 
+@media (max-width: 1250px) {
+  .lightbox-layout-portrait .lightbox-stage {
+    position: static;
+    inset: auto;
+    width: 100%;
+    height: 100%;
+  }
+
+  .lightbox-layout-portrait .lightbox-info {
+    position: static;
+  }
+}
+
 @media (max-width: 900px) {
   .hero-caption {
     display: none;
@@ -667,6 +727,17 @@ footer {
     height: auto;
     flex-direction: column;
     gap: 32px;
+  }
+
+  .lightbox-layout-portrait .lightbox-stage {
+    position: static;
+    inset: auto;
+    width: 100%;
+    height: min(68svh, 700px);
+  }
+
+  .lightbox-layout-portrait .lightbox-info {
+    position: static;
   }
 
   .lightbox-stage {
@@ -795,7 +866,16 @@ footer {
   }
 
   .gallery-grid {
-    columns: 1;
+    display: block;
+  }
+
+  .gallery-grid::after {
+    display: none;
+  }
+
+  .gallery-card {
+    width: 100%;
+    margin-bottom: 14px;
   }
 
   .gallery-toolbar {
