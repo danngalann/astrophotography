@@ -1,0 +1,201 @@
+[
+  {
+    "slug": "andromeda",
+    "kind": "image",
+    "width": 6179,
+    "height": 4028,
+    "widths": [
+      640,
+      1280,
+      2048,
+      3840
+    ]
+  },
+  {
+    "slug": "bodes-galaxy",
+    "kind": "image",
+    "width": 3806,
+    "height": 2091,
+    "widths": [
+      640,
+      1280,
+      2048,
+      3806
+    ]
+  },
+  {
+    "slug": "dumbbell-nebula",
+    "kind": "image",
+    "width": 2158,
+    "height": 3838,
+    "widths": [
+      640,
+      1280,
+      2048,
+      2158
+    ]
+  },
+  {
+    "slug": "heart-nebula",
+    "kind": "image",
+    "width": 6137,
+    "height": 4115,
+    "widths": [
+      640,
+      1280,
+      2048,
+      3840
+    ]
+  },
+  {
+    "slug": "horsehead-nebula",
+    "kind": "image",
+    "width": 6088,
+    "height": 3996,
+    "widths": [
+      640,
+      1280,
+      2048,
+      3840
+    ]
+  },
+  {
+    "slug": "milky-way",
+    "kind": "image",
+    "width": 3904,
+    "height": 6240,
+    "widths": [
+      640,
+      1280,
+      2048,
+      3840
+    ]
+  },
+  {
+    "slug": "ngc-6914",
+    "kind": "image",
+    "width": 2158,
+    "height": 3838,
+    "widths": [
+      640,
+      1280,
+      2048,
+      2158
+    ]
+  },
+  {
+    "slug": "pleiades",
+    "kind": "image",
+    "width": 6063,
+    "height": 4136,
+    "widths": [
+      640,
+      1280,
+      2048,
+      3840
+    ]
+  },
+  {
+    "slug": "silhouette",
+    "kind": "image",
+    "width": 4160,
+    "height": 6240,
+    "widths": [
+      640,
+      1280,
+      2048,
+      3840
+    ]
+  },
+  {
+    "slug": "veil-nebula",
+    "kind": "image",
+    "width": 12358,
+    "height": 8048,
+    "widths": [
+      640,
+      1280,
+      2048,
+      3840
+    ]
+  },
+  {
+    "slug": "galactic-arch",
+    "kind": "image",
+    "width": 1920,
+    "height": 1080,
+    "widths": [
+      640,
+      1280,
+      1920
+    ]
+  },
+  {
+    "slug": "galactic-panorama",
+    "kind": "image",
+    "width": 11904,
+    "height": 5952,
+    "widths": [
+      640,
+      1280,
+      2048,
+      3840
+    ]
+  },
+  {
+    "slug": "milky-way-portrait",
+    "kind": "image",
+    "width": 3364,
+    "height": 5982,
+    "widths": [
+      640,
+      1280,
+      2048,
+      3364
+    ]
+  },
+  {
+    "slug": "observatory-360",
+    "kind": "video",
+    "width": 1920,
+    "height": 1080,
+    "duration": 15.033333,
+    "widths": [
+      1080,
+      1440
+    ]
+  },
+  {
+    "slug": "milky-way-foreground",
+    "kind": "video",
+    "width": 2160,
+    "height": 3240,
+    "duration": 5.338672,
+    "widths": [
+      1080,
+      1440
+    ]
+  },
+  {
+    "slug": "telescope-under-stars",
+    "kind": "video",
+    "width": 2160,
+    "height": 3240,
+    "duration": 8.708709,
+    "widths": [
+      1080,
+      1440
+    ]
+  },
+  {
+    "slug": "milky-way-timelapse",
+    "kind": "video",
+    "width": 2160,
+    "height": 3840,
+    "duration": 59.893227,
+    "widths": [
+      1080,
+      1440
+    ]
+  }
+]
