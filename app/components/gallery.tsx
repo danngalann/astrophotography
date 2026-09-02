@@ -363,6 +363,10 @@ export default function Gallery({ items }: { items: MediaItem[] }) {
                 </span>
               )}
             </button>
+            {item.capturedAt?.slice(0, 4) !==
+              visibleItems[index + 1]?.capturedAt?.slice(0, 4) && (
+              <span className="gallery-row-filler" aria-hidden="true" />
+            )}
           </Fragment>
         ))}
       </div>

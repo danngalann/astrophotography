@@ -272,10 +272,10 @@ a {
   gap: 14px;
 }
 
-.gallery-grid::after {
-  content: "";
+.gallery-row-filler {
   flex-basis: 400px;
   flex-grow: 999;
+  height: 0;
 }
 
 .year-marker {
@@ -869,7 +869,7 @@ footer {
     display: block;
   }
 
-  .gallery-grid::after {
+  .gallery-row-filler {
     display: none;
   }
 
