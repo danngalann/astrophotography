@@ -17,6 +17,7 @@ const filters: Array<"All" | MediaCategory> = [
   "Nightscapes",
   "Motion",
 ];
+type SortOrder = "latest" | "curated";
 
 function imagePath(item: MediaItem, width: number) {
   return `/media/images/${item.slug}/${width}.webp`;
@@ -26,6 +27,18 @@ function imageSrcSet(item: MediaItem) {
   return item.widths
     .map((width) => `${imagePath(item, width)} ${width}w`)
     .join(", ");
+}
+
+function formatCapturedAt(value: string) {
+  const [year, month, day] = value.split("-").map(Number);
+  if (!month) return String(year);
+
+  return new Intl.DateTimeFormat("en", {
+    year: "numeric",
+    month: "long",
+    ...(day ? { day: "numeric" as const } : {}),
+    timeZone: "UTC",
+  }).format(new Date(Date.UTC(year, month - 1, day ?? 1)));
 }
 
 function MediaPreview({ item }: { item: MediaItem }) {
@@ -59,6 +72,7 @@ function MediaPreview({ item }: { item: MediaItem }) {
 
 function DetailList({ item }: { item: MediaItem }) {
   const entries = [
+    ["Captured", item.capturedAt && formatCapturedAt(item.capturedAt)],
     ["Target", item.details?.target],
     ["Acquisition", item.details?.acquisition],
     ["Integration", item.details?.integration],
@@ -184,30 +198,60 @@ function MediaDialog({
 
 export default function Gallery({ items }: { items: MediaItem[] }) {
   const [filter, setFilter] = useState<(typeof filters)[number]>("All");
+  const [sortOrder, setSortOrder] = useState<SortOrder>("latest");
   const [selectedSlug, setSelectedSlug] = useState<string | null>(null);
   const visibleItems = useMemo(
-    () =>
-      filter === "All"
+    () => {
+      const filtered =
+        filter === "All"
         ? items
-        : items.filter((item) => item.category === filter),
-    [filter, items],
+          : items.filter((item) => item.category === filter);
+      if (sortOrder === "curated") return filtered;
+
+      const curatedOrder = new Map(
+        items.map((item, index) => [item.slug, index]),
+      );
+      return filtered.slice().sort((a, b) => {
+        if (a.capturedAt && b.capturedAt) {
+          return b.capturedAt.localeCompare(a.capturedAt);
+        }
+        if (a.capturedAt) return -1;
+        if (b.capturedAt) return 1;
+        return (
+          (curatedOrder.get(a.slug) ?? 0) - (curatedOrder.get(b.slug) ?? 0)
+        );
+      });
+    },
+    [filter, items, sortOrder],
   );
   const selected = items.find((item) => item.slug === selectedSlug);
 
   return (
     <>
-      <div className="gallery-toolbar" aria-label="Filter gallery">
-        {filters.map((option) => (
-          <button
-            type="button"
-            key={option}
-            className={option === filter ? "active" : undefined}
-            onClick={() => setFilter(option)}
-            aria-pressed={option === filter}
+      <div className="gallery-controls">
+        <div className="gallery-toolbar" aria-label="Filter gallery">
+          {filters.map((option) => (
+            <button
+              type="button"
+              key={option}
+              className={option === filter ? "active" : undefined}
+              onClick={() => setFilter(option)}
+              aria-pressed={option === filter}
+            >
+              {option}
+            </button>
+          ))}
+        </div>
+        <label className="gallery-sort">
+          <span>Order</span>
+          <select
+            value={sortOrder}
+            onChange={(event) => setSortOrder(event.target.value as SortOrder)}
           >
-            {option}
-          </button>
-        ))}
+            <option value="latest">Latest first</option>
+            <option value="curated">Curated</option>
+          </select>
+        </label>
       </div>
 
       <div className="gallery-grid">
@@ -223,7 +267,10 @@ export default function Gallery({ items }: { items: MediaItem[] }) {
             <MediaPreview item={item} />
             <span className="card-shade" />
             <span className="card-copy">
-              <span className="card-category">{item.category}</span>
+              <span className="card-category">
+                {item.category}
+                {item.capturedAt && ` · ${item.capturedAt.slice(0, 4)}`}
+              </span>
               <strong>{item.title}</strong>
             </span>
             {item.kind !== "image" && (

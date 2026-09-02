@@ -1,5 +1,3 @@
-/* eslint-disable @next/next/no-img-element -- the hero uses pre-generated responsive assets */
-
 import Gallery from "./components/gallery";
 import { mediaItems } from "@/content/media";
 

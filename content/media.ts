@@ -23,6 +23,7 @@ export interface MediaItem {
   widths: number[];
   duration?: number;
   featured?: boolean;
+  capturedAt?: string;
   details?: CaptureDetails;
 }
 
@@ -234,6 +235,14 @@ export const mediaItems: MediaItem[] = editorial.map((item) => {
   const generated = generatedBySlug.get(item.slug);
   if (!generated) {
     throw new Error(`Missing generated media for "${item.slug}"`);
+  }
+  if (
+    item.capturedAt &&
+    !/^\d{4}(?:-\d{2}){0,2}$/.test(item.capturedAt)
+  ) {
+    throw new Error(
+      `Invalid capturedAt date for "${item.slug}": use YYYY, YYYY-MM, or YYYY-MM-DD`,
+    );
   }
 
   return {

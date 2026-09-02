@@ -29,8 +29,11 @@ ASTRO_UPLOAD_DIR=/path/to/uploads \
 pnpm media:build
 ```
 
-Edit `content/media.ts` to add optional target, acquisition, integration, and
-equipment details. Empty fields are omitted from the interface.
+Edit `content/media.ts` to add optional target, acquisition, integration,
+equipment, location, and `capturedAt` details. Capture dates accept `YYYY`,
+`YYYY-MM`, or `YYYY-MM-DD`. The default gallery order places dated work newest
+first, followed by undated work in curated order. Empty fields are omitted from
+the interface.
 
 Generated videos can be moved to object storage later without changing the
 content model. Until Git LFS is installed, do not add camera originals or
