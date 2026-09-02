@@ -5,8 +5,7 @@ import { fileURLToPath } from "node:url";
 
 const root = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 const archiveDir = resolve(
-  process.env.ASTRO_ARCHIVE_DIR ??
-    "/mnt/rocinante/data/PHOTOSHOP/Pictures/Astrophotography",
+  process.env.ASTRO_ARCHIVE_DIR ?? join(root, "media-originals"),
 );
 const outputDir = join(root, "public/media");
 const manifestPath = join(root, "content/generated-media.json");

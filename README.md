@@ -34,13 +34,17 @@ FFmpeg:
 pnpm media:build
 ```
 
-By default the script reads canonical source media from
-`/mnt/rocinante/data/PHOTOSHOP/Pictures/Astrophotography`. Override the archive
-location when needed:
+By default the script reads canonical source media from the ignored
+`media-originals` directory. It can instead read an archive anywhere on the
+local filesystem:
 
 ```bash
 ASTRO_ARCHIVE_DIR=/path/to/archive pnpm media:build
 ```
+
+The source paths in `scripts/process-media.mjs` are relative to the selected
+archive root. Never commit the originals, private mount points, or server
+directory structure.
 
 ## Editing picture metadata
 
