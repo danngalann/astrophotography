@@ -1,69 +1,102 @@
-import Image from "next/image";
-import styles from "./page.module.css";
+/* eslint-disable @next/next/no-img-element -- the hero uses pre-generated responsive assets */
+
+import Gallery from "./components/gallery";
+import { mediaItems } from "@/content/media";
 
 export default function Home() {
   return (
-    <div className={styles.page}>
-      <main className={styles.main}>
-        <Image
-          className={styles.logo}
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className={styles.intro}>
+    <main>
+      <header className="site-header">
+        <a className="wordmark" href="#">
+          <span>Daniel Galán</span>
+          <small>Astrophotography</small>
+        </a>
+        <nav aria-label="Main navigation">
+          <a href="#gallery">Gallery</a>
+          <a href="#about">About</a>
+          <a
+            href="https://www.instagram.com/astro__dann"
+            target="_blank"
+            rel="noreferrer"
+          >
+            Instagram
+          </a>
+        </nav>
+      </header>
+
+      <section className="hero">
+        <picture className="hero-image">
+          <source
+            srcSet="/media/images/veil-nebula/2048.webp"
+            media="(min-width: 900px)"
+          />
+          <img
+            src="/media/images/veil-nebula/1280.webp"
+            alt=""
+            width="12358"
+            height="8048"
+          />
+        </picture>
+        <div className="hero-vignette" />
+        <div className="hero-copy">
+          <span className="eyebrow">From Earth, looking outward</span>
           <h1>
-            To get started, edit the{" "}
-            <code className={styles.code}>page.tsx</code> file.
+            Light gathered
+            <br />
+            across time.
           </h1>
           <p>
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              Learning
-            </a>{" "}
-            center.
+            Deep-sky objects, quiet landscapes, and nights spent beneath the
+            stars.
+          </p>
+          <a className="hero-link" href="#gallery">
+            Explore the gallery <span aria-hidden="true">↓</span>
+          </a>
+        </div>
+        <div className="hero-caption">
+          <span>Eastern Veil Nebula</span>
+          <span>NGC 6992 · Cygnus</span>
+        </div>
+      </section>
+
+      <section className="gallery-section" id="gallery">
+        <div className="section-heading">
+          <div>
+            <span className="eyebrow">Selected work</span>
+            <h2>The gallery</h2>
+          </div>
+          <p>
+            Images and films from dark skies and long nights. Open any frame
+            for the full-resolution view and capture notes.
           </p>
         </div>
-        <div className={styles.ctas}>
-          <a
-            className={styles.primary}
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className={styles.logo}
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={14}
-            />
-            Deploy Now
-          </a>
-          <a
-            className={styles.secondary}
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
+        <Gallery items={mediaItems} />
+      </section>
+
+      <section className="about-section" id="about">
+        <span className="eyebrow">About the work</span>
+        <div className="about-grid">
+          <h2>Patience, planning, and a little borrowed starlight.</h2>
+          <div>
+            <p>
+              Astrophotography brings together astronomy, technology, and the
+              stillness of being outside after dark. Some images here took
+              minutes to make; others combine light gathered over several
+              nights.
+            </p>
+            <p>
+              This is an evolving archive. Acquisition details, integration
+              time, and equipment notes are added as each project is
+              documented.
+            </p>
+          </div>
         </div>
-      </main>
-    </div>
+      </section>
+
+      <footer>
+        <span>© {new Date().getFullYear()} Daniel Galán</span>
+        <span>Made under the stars</span>
+      </footer>
+    </main>
   );
 }
