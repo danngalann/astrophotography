@@ -11,16 +11,18 @@ pnpm dev
 
 ## Docker
 
-The production image uses Next.js standalone output and runs as a non-root
-user. It serves on port `3001` by default so it can run alongside the main
-portfolio:
+The production image uses Next.js standalone output, runs as a non-root user,
+and joins the external `proxy` Docker network without publishing a host port.
+Create that network once if it does not already exist:
 
 ```bash
-docker compose -f docker-compose.prod.yml up --build -d
+docker network create proxy
+make deploy
 ```
 
-Override the host port with `ASTRO_PORT=8080`. The container always listens on
-port `3000`.
+The reverse proxy can reach the application at `http://astrophotography:3000`.
+Use `make logs`, `make status`, `make restart`, and `make down` for routine
+operations.
 
 ## Media workflow
 

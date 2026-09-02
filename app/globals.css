@@ -605,6 +605,20 @@ footer {
   text-transform: uppercase;
 }
 
+.footer-links {
+  display: flex;
+  gap: 24px;
+}
+
+.footer-links a {
+  transition: color 180ms ease;
+}
+
+.footer-links a:hover,
+.footer-links a:focus-visible {
+  color: var(--ink);
+}
+
 @keyframes hero-reveal {
   from {
     opacity: 0;
@@ -758,6 +772,12 @@ footer {
 
   footer {
     gap: 24px;
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .footer-links {
+    flex-wrap: wrap;
   }
 }
 

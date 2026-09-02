@@ -11,13 +11,19 @@ export default function Home() {
         </a>
         <nav aria-label="Main navigation">
           <a href="#gallery">Gallery</a>
-          <a href="#about">About</a>
           <a
-            href="https://www.instagram.com/astro__dann"
+            href="https://danngalann.com"
             target="_blank"
             rel="noreferrer"
           >
-            Instagram
+            Main portfolio
+          </a>
+          <a
+            href="https://github.com/danngalann/astrophotography"
+            target="_blank"
+            rel="noreferrer"
+          >
+            GitHub
           </a>
         </nav>
       </header>
@@ -93,7 +99,23 @@ export default function Home() {
 
       <footer>
         <span>© {new Date().getFullYear()} Daniel Galán</span>
-        <span>Made under the stars</span>
+        <div className="footer-links">
+          <a href="https://danngalann.com">Main portfolio</a>
+          <a
+            href="https://github.com/danngalann/astrophotography"
+            target="_blank"
+            rel="noreferrer"
+          >
+            Source code
+          </a>
+          <a
+            href="https://www.instagram.com/astro__dann"
+            target="_blank"
+            rel="noreferrer"
+          >
+            Instagram
+          </a>
+        </div>
       </footer>
     </main>
   );
