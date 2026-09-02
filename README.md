@@ -9,6 +9,19 @@ pnpm install
 pnpm dev
 ```
 
+## Docker
+
+The production image uses Next.js standalone output and runs as a non-root
+user. It serves on port `3001` by default so it can run alongside the main
+portfolio:
+
+```bash
+docker compose -f docker-compose.prod.yml up --build -d
+```
+
+Override the host port with `ASTRO_PORT=8080`. The container always listens on
+port `3000`.
+
 ## Media workflow
 
 Originals deliberately live outside this repository. The committed web assets
