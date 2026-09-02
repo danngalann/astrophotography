@@ -17,7 +17,6 @@ const filters: Array<"All" | MediaCategory> = [
   "Nightscapes",
   "Motion",
 ];
-type SortOrder = "latest" | "curated";
 
 function imagePath(item: MediaItem, width: number) {
   return `/media/images/${item.slug}/${width}.webp`;
@@ -41,17 +40,95 @@ function formatCapturedAt(value: string) {
   }).format(new Date(Date.UTC(year, month - 1, day ?? 1)));
 }
 
-function MediaPreview({ item }: { item: MediaItem }) {
-  if (item.kind === "video") {
-    return (
+function VideoPreview({ item }: { item: MediaItem }) {
+  const containerRef = useRef<HTMLSpanElement>(null);
+  const videoRef = useRef<HTMLVideoElement>(null);
+  const [posterReady, setPosterReady] = useState(false);
+  const [loadVideo, setLoadVideo] = useState(false);
+  const [nearViewport, setNearViewport] = useState(false);
+  const [playing, setPlaying] = useState(false);
+
+  useEffect(() => {
+    const container = containerRef.current;
+    if (!container || !posterReady) return;
+
+    const desktop = window.matchMedia(
+      "(min-width: 901px) and (prefers-reduced-motion: no-preference)",
+    );
+    let observer: IntersectionObserver | undefined;
+
+    const observeWhenEligible = () => {
+      observer?.disconnect();
+      observer = undefined;
+      if (!desktop.matches) {
+        setLoadVideo(false);
+        setNearViewport(false);
+        setPlaying(false);
+        return;
+      }
+
+      observer = new IntersectionObserver(
+        ([entry]) => {
+          setNearViewport(entry.isIntersecting);
+          if (entry.isIntersecting) setLoadVideo(true);
+        },
+        { rootMargin: "300px 0px" },
+      );
+      observer.observe(container);
+    };
+
+    observeWhenEligible();
+    desktop.addEventListener("change", observeWhenEligible);
+    return () => {
+      observer?.disconnect();
+      desktop.removeEventListener("change", observeWhenEligible);
+    };
+  }, [posterReady]);
+
+  useEffect(() => {
+    const video = videoRef.current;
+    if (!video) return;
+    if (!nearViewport) {
+      video.pause();
+      return;
+    }
+    void video.play().catch(() => setPlaying(false));
+  }, [loadVideo, nearViewport]);
+
+  return (
+    <span className="media-preview" ref={containerRef}>
       <img
         src={`/media/videos/${item.slug}/poster.webp`}
         alt={item.alt}
         width={item.width}
         height={item.height}
         loading="lazy"
+        onLoad={() => setPosterReady(true)}
       />
-    );
+      {loadVideo && (
+        <video
+          ref={videoRef}
+          className={playing ? "preview-video playing" : "preview-video"}
+          src={`/media/videos/${item.slug}/1080.mp4`}
+          width={item.width}
+          height={item.height}
+          loop
+          muted
+          playsInline
+          preload="auto"
+          aria-hidden="true"
+          tabIndex={-1}
+          onPlaying={() => setPlaying(true)}
+          onPause={() => setPlaying(false)}
+        />
+      )}
+    </span>
+  );
+}
+
+function MediaPreview({ item }: { item: MediaItem }) {
+  if (item.kind === "video") {
+    return <VideoPreview item={item} />;
   }
 
   return (
@@ -115,6 +192,8 @@ function LightboxMedia({ item }: { item: MediaItem }) {
         muted
         playsInline
         preload="metadata"
+        width={item.width}
+        height={item.height}
       >
         {item.widths
           .slice()
@@ -181,7 +260,13 @@ function MediaDialog({
       >
         <span aria-hidden="true">×</span>
       </button>
-      <div className="lightbox-layout">
+      <div
+        className={
+          item.kind === "video"
+            ? "lightbox-layout lightbox-layout-video"
+            : "lightbox-layout"
+        }
+      >
         <div className="lightbox-stage">
           <LightboxMedia item={item} />
         </div>
@@ -198,16 +283,13 @@ function MediaDialog({
 
 export default function Gallery({ items }: { items: MediaItem[] }) {
   const [filter, setFilter] = useState<(typeof filters)[number]>("All");
-  const [sortOrder, setSortOrder] = useState<SortOrder>("latest");
   const [selectedSlug, setSelectedSlug] = useState<string | null>(null);
   const visibleItems = useMemo(
     () => {
       const filtered =
         filter === "All"
         ? items
-          : items.filter((item) => item.category === filter);
-      if (sortOrder === "curated") return filtered;
-
+        : items.filter((item) => item.category === filter);
       const curatedOrder = new Map(
         items.map((item, index) => [item.slug, index]),
       );
@@ -222,36 +304,24 @@ export default function Gallery({ items }: { items: MediaItem[] }) {
         );
       });
     },
-    [filter, items, sortOrder],
+    [filter, items],
   );
   const selected = items.find((item) => item.slug === selectedSlug);
 
   return (
     <>
-      <div className="gallery-controls">
-        <div className="gallery-toolbar" aria-label="Filter gallery">
-          {filters.map((option) => (
-            <button
-              type="button"
-              key={option}
-              className={option === filter ? "active" : undefined}
-              onClick={() => setFilter(option)}
-              aria-pressed={option === filter}
-            >
-              {option}
-            </button>
-          ))}
-        </div>
-        <label className="gallery-sort">
-          <span>Order</span>
-          <select
-            value={sortOrder}
-            onChange={(event) => setSortOrder(event.target.value as SortOrder)}
+      <div className="gallery-toolbar" aria-label="Filter gallery">
+        {filters.map((option) => (
+          <button
+            type="button"
+            key={option}
+            className={option === filter ? "active" : undefined}
+            onClick={() => setFilter(option)}
+            aria-pressed={option === filter}
           >
-            <option value="latest">Latest first</option>
-            <option value="curated">Curated</option>
-          </select>
-        </label>
+            {option}
+          </button>
+        ))}
       </div>
 
       <div className="gallery-grid">
