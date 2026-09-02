@@ -1,32 +1,11 @@
 import Gallery from "./components/gallery";
+import SiteHeader from "./components/site-header";
 import { mediaItems } from "@/content/media";
 
 export default function Home() {
   return (
     <main>
-      <header className="site-header">
-        <a className="wordmark" href="#">
-          <span>Daniel Galán</span>
-          <small>Astrophotography</small>
-        </a>
-        <nav aria-label="Main navigation">
-          <a href="#gallery">Gallery</a>
-          <a
-            href="https://danngalann.com"
-            target="_blank"
-            rel="noreferrer"
-          >
-            Main portfolio
-          </a>
-          <a
-            href="https://github.com/danngalann/astrophotography"
-            target="_blank"
-            rel="noreferrer"
-          >
-            GitHub
-          </a>
-        </nav>
-      </header>
+      <SiteHeader />
 
       <section className="hero">
         <picture className="hero-image">
