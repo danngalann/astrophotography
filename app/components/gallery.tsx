@@ -260,13 +260,7 @@ function MediaDialog({
       >
         <span aria-hidden="true">×</span>
       </button>
-      <div
-        className={
-          item.kind === "video"
-            ? "lightbox-layout lightbox-layout-video"
-            : "lightbox-layout"
-        }
-      >
+      <div className="lightbox-layout">
         <div className="lightbox-stage">
           <LightboxMedia item={item} />
         </div>

@@ -415,22 +415,6 @@ a {
   align-items: center;
 }
 
-.lightbox-layout-video {
-  max-width: 1900px;
-  grid-template-columns:
-    minmax(220px, 360px)
-    minmax(0, 1fr)
-    minmax(220px, 360px);
-}
-
-.lightbox-layout-video .lightbox-stage {
-  grid-column: 2;
-}
-
-.lightbox-layout-video .lightbox-info {
-  grid-column: 3;
-}
-
 .lightbox-stage {
   display: grid;
   width: 100%;
@@ -450,7 +434,9 @@ a {
 }
 
 .lightbox-video {
-  margin: auto;
+  width: 100%;
+  height: 100%;
+  max-height: 100%;
   object-position: center;
 }
 
@@ -685,11 +671,6 @@ footer {
     gap: 32px;
   }
 
-  .lightbox-layout-video .lightbox-stage,
-  .lightbox-layout-video .lightbox-info {
-    grid-column: auto;
-  }
-
   .lightbox-stage {
     height: min(68svh, 700px);
   }
@@ -760,6 +741,11 @@ footer {
   .lightbox-image,
   .lightbox-video {
     max-height: 70svh;
+  }
+
+  .lightbox-video {
+    width: auto;
+    height: auto;
   }
 
   .panorama {
