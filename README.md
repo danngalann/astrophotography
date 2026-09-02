@@ -34,14 +34,12 @@ FFmpeg:
 pnpm media:build
 ```
 
-By default the script reads stills from `../portfolio/public/astro` and uploads
-from `/run/media/daniel/ASTRODRIVE/to_upload`. Override either location when
-needed:
+By default the script reads canonical source media from
+`/mnt/rocinante/data/PHOTOSHOP/Pictures/Astrophotography`. Override the archive
+location when needed:
 
 ```bash
-PORTFOLIO_ASTRO_DIR=/path/to/images \
-ASTRO_UPLOAD_DIR=/path/to/uploads \
-pnpm media:build
+ASTRO_ARCHIVE_DIR=/path/to/archive pnpm media:build
 ```
 
 ## Editing picture metadata

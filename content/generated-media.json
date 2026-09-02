@@ -197,5 +197,233 @@
       1080,
       1440
     ]
+  },
+  {
+    "slug": "triangulum-galaxy-2024",
+    "kind": "image",
+    "width": 3827,
+    "height": 2163,
+    "widths": [
+      640,
+      1280,
+      2048,
+      3827
+    ]
+  },
+  {
+    "slug": "fish-head-nebula",
+    "kind": "image",
+    "width": 3745,
+    "height": 2107,
+    "widths": [
+      640,
+      1280,
+      2048,
+      3745
+    ]
+  },
+  {
+    "slug": "orion-nebula-2024",
+    "kind": "image",
+    "width": 4776,
+    "height": 2687,
+    "widths": [
+      640,
+      1280,
+      2048,
+      3840
+    ]
+  },
+  {
+    "slug": "pinwheel-galaxy",
+    "kind": "image",
+    "width": 3826,
+    "height": 2132,
+    "widths": [
+      640,
+      1280,
+      2048,
+      3826
+    ]
+  },
+  {
+    "slug": "elephants-trunk-nebula",
+    "kind": "image",
+    "width": 1079,
+    "height": 1919,
+    "widths": [
+      640,
+      1079
+    ]
+  },
+  {
+    "slug": "crescent-nebula",
+    "kind": "image",
+    "width": 947,
+    "height": 1784,
+    "widths": [
+      640,
+      947
+    ]
+  },
+  {
+    "slug": "wizard-nebula",
+    "kind": "image",
+    "width": 1003,
+    "height": 1772,
+    "widths": [
+      640,
+      1003
+    ]
+  },
+  {
+    "slug": "pacman-nebula",
+    "kind": "image",
+    "width": 2110,
+    "height": 3754,
+    "widths": [
+      640,
+      1280,
+      2048,
+      2110
+    ]
+  },
+  {
+    "slug": "orion-nebula-hdr",
+    "kind": "image",
+    "width": 6226,
+    "height": 4146,
+    "widths": [
+      640,
+      1280,
+      2048,
+      3840
+    ]
+  },
+  {
+    "slug": "first-galactic-core",
+    "kind": "image",
+    "width": 2601,
+    "height": 1732,
+    "widths": [
+      640,
+      1280,
+      2048,
+      2601
+    ]
+  },
+  {
+    "slug": "milky-way-2023-reprocess",
+    "kind": "image",
+    "width": 3465,
+    "height": 5202,
+    "widths": [
+      640,
+      1280,
+      2048,
+      3465
+    ]
+  },
+  {
+    "slug": "milky-way-and-trees",
+    "kind": "image",
+    "width": 2601,
+    "height": 1732,
+    "widths": [
+      640,
+      1280,
+      2048,
+      2601
+    ]
+  },
+  {
+    "slug": "touching-the-sky",
+    "kind": "image",
+    "width": 4180,
+    "height": 6264,
+    "widths": [
+      640,
+      1280,
+      2048,
+      3840
+    ]
+  },
+  {
+    "slug": "wide-field-andromeda",
+    "kind": "image",
+    "width": 6240,
+    "height": 4160,
+    "widths": [
+      640,
+      1280,
+      2048,
+      3840
+    ]
+  },
+  {
+    "slug": "pinwheel-galaxy-2024",
+    "kind": "image",
+    "width": 1614,
+    "height": 1016,
+    "widths": [
+      640,
+      1280,
+      1614
+    ]
+  },
+  {
+    "slug": "full-veil-nebula-2024",
+    "kind": "image",
+    "width": 6240,
+    "height": 4160,
+    "widths": [
+      640,
+      1280,
+      2048,
+      3840
+    ]
+  },
+  {
+    "slug": "horsehead-first-session",
+    "kind": "image",
+    "width": 6207,
+    "height": 3994,
+    "widths": [
+      640,
+      1280,
+      2048,
+      3840
+    ]
+  },
+  {
+    "slug": "scope-tracking-timelapse",
+    "kind": "video",
+    "width": 2160,
+    "height": 3240,
+    "duration": 21.121121,
+    "widths": [
+      1080,
+      1440
+    ]
+  },
+  {
+    "slug": "moon-through-clouds",
+    "kind": "video",
+    "width": 1080,
+    "height": 1920,
+    "duration": 28.668056,
+    "widths": [
+      1080
+    ]
+  },
+  {
+    "slug": "solar-eclipse-timelapse-teruel",
+    "kind": "video",
+    "width": 1080,
+    "height": 1920,
+    "duration": 33.733333,
+    "widths": [
+      1080
+    ]
   }
 ]

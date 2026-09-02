@@ -1,58 +1,270 @@
 import { execFileSync } from "node:child_process";
-import { mkdirSync, rmSync, writeFileSync } from "node:fs";
+import { existsSync, mkdirSync, rmSync, writeFileSync } from "node:fs";
 import { dirname, join, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 
 const root = resolve(dirname(fileURLToPath(import.meta.url)), "..");
-const portfolioDir = resolve(
-  process.env.PORTFOLIO_ASTRO_DIR ?? join(root, "../portfolio/public/astro"),
-);
-const uploadDir = resolve(
-  process.env.ASTRO_UPLOAD_DIR ?? "/run/media/daniel/ASTRODRIVE/to_upload",
+const archiveDir = resolve(
+  process.env.ASTRO_ARCHIVE_DIR ??
+    "/mnt/rocinante/data/PHOTOSHOP/Pictures/Astrophotography",
 );
 const outputDir = join(root, "public/media");
 const manifestPath = join(root, "content/generated-media.json");
 
 const sources = [
-  ["andromeda", "image", join(portfolioDir, "andromeda.jpg")],
-  ["bodes-galaxy", "image", join(portfolioDir, "bode.jpg")],
-  ["dumbbell-nebula", "image", join(portfolioDir, "dumbbell.jpg")],
-  ["heart-nebula", "image", join(portfolioDir, "heart_nebula.jpg")],
-  ["horsehead-nebula", "image", join(portfolioDir, "horsehead.jpg")],
-  ["milky-way", "image", join(portfolioDir, "milky_way.jpg")],
-  ["ngc-6914", "image", join(portfolioDir, "ngc6914.jpg")],
-  ["pleiades", "image", join(portfolioDir, "pleiades.jpg")],
-  ["silhouette", "image", join(portfolioDir, "silhouette.jpg")],
-  ["veil-nebula", "image", join(portfolioDir, "veil_nebula.jpg")],
-  ["galactic-arch", "image", join(uploadDir, "arch.jpg")],
-  ["galactic-panorama", "image", join(uploadDir, "final_best_360.tif")],
-  ["milky-way-portrait", "image", join(uploadDir, "Image31.jpg")],
-  ["observatory-360", "video", join(uploadDir, "360_animation.mp4")],
+  [
+    "andromeda",
+    "image",
+    join(
+      archiveDir,
+      "2025-01-31 Olivella - Horsehead and Andromeda/master/andromeda_2025_1_31.jpg",
+    ),
+  ],
+  [
+    "bodes-galaxy",
+    "image",
+    join(
+      archiveDir,
+      "2025-03-29 Casa Leo - Pinwheel and Bode/bode_wbpp/master/bode_new.jpg",
+    ),
+  ],
+  [
+    "dumbbell-nebula",
+    "image",
+    join(archiveDir, "2025-08-05 Granollers - dumbbell/dumbbell.jpg"),
+  ],
+  [
+    "heart-nebula",
+    "image",
+    join(
+      archiveDir,
+      "2025-11-25 - Granollers - Heart Nebula/heart_nebula_RGB.jpg",
+    ),
+  ],
+  [
+    "horsehead-nebula",
+    "image",
+    join(
+      archiveDir,
+      "2025-01-31 Olivella - Horsehead and Andromeda/master/Image18_flipped.jpg",
+    ),
+  ],
+  [
+    "milky-way",
+    "image",
+    join(archiveDir, "2024-08-3 Montseny/south/integration_DBE.jpg"),
+  ],
+  [
+    "ngc-6914",
+    "image",
+    join(
+      archiveDir,
+      "2025-08-23 Castellar - Veil and NGC6914/NCG6914/wbpp/master/ncg6914.jpg",
+    ),
+  ],
+  [
+    "pleiades",
+    "image",
+    join(
+      archiveDir,
+      "2025-01-24 Olivella - Horsehead and Pleiades/plaiades.jpg",
+    ),
+  ],
+  [
+    "silhouette",
+    "image",
+    join(
+      archiveDir,
+      "2024-05-11 Turó del Home Alison y Emma/edited/healed/24.jpg",
+    ),
+  ],
+  [
+    "veil-nebula",
+    "image",
+    join(archiveDir, "2026-06-12 - Olivella - Veil Nebula/veil.jpg"),
+  ],
+  ["galactic-arch", "image", join(archiveDir, "Teruel/arch.jpg")],
+  [
+    "galactic-panorama",
+    "image",
+    join(archiveDir, "Teruel/final_best_360.jpg"),
+  ],
+  [
+    "milky-way-portrait",
+    "image",
+    join(archiveDir, "Teruel/Canon/Day 2 Milky way/finals/Image31.jpg"),
+  ],
+  ["observatory-360", "video", join(archiveDir, "Teruel/360_animation.mp4")],
   [
     "milky-way-foreground",
     "video",
     join(
-      uploadDir,
-      "Day_2_Milky_way_with_foreground_h264-420_Rec.709L_4KUHD_29.97_HQ.mp4",
+      archiveDir,
+      "Teruel/Day_2_Milky_way_with_foreground_h264-420_Rec.709L_4KUHD_29.97_HQ.mp4",
     ),
   ],
   [
     "telescope-under-stars",
     "video",
     join(
-      uploadDir,
-      "Day_2_Telescope_h264-420_Rec.709L_4KUHD_29.97_HQ.mp4",
+      archiveDir,
+      "Teruel/Canon/Day 2 Telescope/Day_2_Telescope_h264-420_Rec.709L_4KUHD_29.97_HQ.mp4",
     ),
   ],
   [
     "milky-way-timelapse",
     "video",
     join(
-      uploadDir,
-      "MilkyWay_timelapse_sub_h264-420_Rec.709L_4KUHD_29.97_HQ_mb02.mp4",
+      archiveDir,
+      "2026-03-21 - Olivella - Timelapse/MilkyWay_timelapse_sub_h264-420_Rec.709L_4KUHD_29.97_HQ_mb02.mp4",
     ),
   ],
+  [
+    "triangulum-galaxy-2024",
+    "image",
+    join(archiveDir, "2024-09-15 Triangulum Galaxy/master/FINAL.jpg"),
+  ],
+  [
+    "fish-head-nebula",
+    "image",
+    join(archiveDir, "2024-09-15 Fish Head Nebula/master/FINAL.jpg"),
+  ],
+  [
+    "orion-nebula-2024",
+    "image",
+    join(archiveDir, "2024-11-29 Orion & Pleiades/final_cropped.jpg"),
+  ],
+  [
+    "pinwheel-galaxy",
+    "image",
+    join(
+      archiveDir,
+      "2025-03-29 Casa Leo - Pinwheel and Bode/pinwheel_wbpp/master/final.jpg",
+    ),
+  ],
+  [
+    "elephants-trunk-nebula",
+    "image",
+    join(
+      archiveDir,
+      "2025-06-28 - Castelltallat - Veil and Trunk/IC 1396A_sub/master/final.jpg",
+    ),
+  ],
+  [
+    "crescent-nebula",
+    "image",
+    join(
+      archiveDir,
+      "2025-07-13 Granollers - Crescent & Wizard/NGC 6888_sub/final.jpg",
+    ),
+  ],
+  [
+    "wizard-nebula",
+    "image",
+    join(
+      archiveDir,
+      "2025-07-13 Granollers - Crescent & Wizard/NGC 7380_sub/final_hoo_nbstars.jpg",
+    ),
+  ],
+  [
+    "pacman-nebula",
+    "image",
+    join(
+      archiveDir,
+      "2025-09-26 - Castellar - Pacman/NGC 281W_sub/wbpp/master/NGC_281.jpg",
+    ),
+  ],
+  [
+    "orion-nebula-hdr",
+    "image",
+    join(
+      archiveDir,
+      "2026-02-21 - Olivella - Orion and M44/Image20_resample_flipped.jpg",
+    ),
+  ],
+  [
+    "first-galactic-core",
+    "image",
+    join(
+      archiveDir,
+      "2023-08-12 Garraf 1a vez/edited/1_merge4.png",
+    ),
+  ],
+  [
+    "milky-way-2023-reprocess",
+    "image",
+    join(
+      archiveDir,
+      "2023-08-14/edits/integration_DBE.jpg",
+    ),
+  ],
+  [
+    "milky-way-and-trees",
+    "image",
+    join(archiveDir, "2023-08-14/edits/4.jpg"),
+  ],
+  [
+    "touching-the-sky",
+    "image",
+    join(
+      archiveDir,
+      "2023-10-12 Turó del home/Edits/Siluetas/daniel_touching_sky.png",
+    ),
+  ],
+  [
+    "wide-field-andromeda",
+    "image",
+    join(
+      archiveDir,
+      "2023-10-12 Turó del home/Edits/Andrómeda/integration_DBE.jpg",
+    ),
+  ],
+  [
+    "pinwheel-galaxy-2024",
+    "image",
+    join(archiveDir, "2024-07-26 Casa Leo/processed-DeNoiseAI-standard.jpg"),
+  ],
+  [
+    "full-veil-nebula-2024",
+    "image",
+    join(archiveDir, "2024-08-9 Pujalt/final.jpg"),
+  ],
+  [
+    "horsehead-first-session",
+    "image",
+    join(
+      archiveDir,
+      "2025-01-24 Olivella - Horsehead and Pleiades/StarReduced.jpg",
+    ),
+  ],
+  [
+    "scope-tracking-timelapse",
+    "video",
+    join(
+      archiveDir,
+      "2024-09-27 Wizard Nebula (to edit)/Timelapses/scope_timelapse.mp4",
+    ),
+  ],
+  [
+    "moon-through-clouds",
+    "video",
+    join(archiveDir, "moon with clouds.mp4"),
+  ],
+  [
+    "solar-eclipse-timelapse-teruel",
+    "video",
+    join(archiveDir, "Teruel/S50/2026-08-12-202013-Solar-timelapse.mp4"),
+  ],
 ];
+
+const missingSources = sources
+  .map(([, , source]) => source)
+  .filter((source) => !existsSync(source));
+if (missingSources.length) {
+  throw new Error(
+    `Missing ${missingSources.length} media source(s):\n${missingSources.join("\n")}`,
+  );
+}
 
 function run(command, args) {
   console.log(`  ${command} ${args.at(-1)}`);
