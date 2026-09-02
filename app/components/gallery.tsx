@@ -143,10 +143,7 @@ function MediaDialog({
   useEffect(() => {
     const dialog = dialogRef.current;
     if (!dialog) return;
-    dialog.showModal();
-    return () => {
-      if (dialog.open) dialog.close();
-    };
+    if (!dialog.open) dialog.showModal();
   }, []);
 
   const close = () => dialogRef.current?.close();
