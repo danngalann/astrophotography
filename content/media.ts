@@ -527,6 +527,7 @@ const editorial: EditorialItem[] = [
       "Moonlight shifts through passing layers of cloud in a vertical study.",
     alt: "The Moon moving behind passing clouds",
     details: { target: "Moon" },
+    capturedAt: "2025-11-22",
   },
   {
     slug: "solar-eclipse-timelapse-teruel",
