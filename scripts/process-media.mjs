@@ -421,5 +421,21 @@ const manifest = sources.map(([slug, kind, source]) => {
     : processVideo(slug, source);
 });
 
+const socialDir = join(outputDir, "social");
+mkdirSync(socialDir, { recursive: true });
+run("magick", [
+  join(outputDir, "images/veil-nebula/2048.webp"),
+  "-resize",
+  "1200x630^",
+  "-gravity",
+  "center",
+  "-extent",
+  "1200x630",
+  "-strip",
+  "-quality",
+  "88",
+  join(socialDir, "veil-nebula.jpg"),
+]);
+
 writeFileSync(manifestPath, `${JSON.stringify(manifest, null, 2)}\n`);
 console.log(`Wrote ${manifestPath}`);
