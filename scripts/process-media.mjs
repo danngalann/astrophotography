@@ -163,7 +163,7 @@ function processVideo(slug, source) {
       "-preset",
       "slow",
       "-crf",
-      outputWidth <= 1080 ? "24" : "22",
+      outputWidth <= 1080 ? "24" : "25",
       "-pix_fmt",
       "yuv420p",
       "-movflags",
