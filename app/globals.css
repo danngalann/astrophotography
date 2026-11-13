@@ -541,6 +541,108 @@ a {
   color: #d7d4ce;
 }
 
+.target-select {
+  flex: none;
+  margin-left: auto;
+  padding: 9px 16px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  color: var(--muted);
+  background: var(--night);
+  font: inherit;
+  font-size: 0.67rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.target-timeline {
+  margin-top: 34px;
+}
+
+.timeline-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 14px;
+  color: #777982;
+  font-size: 0.68rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.timeline-arrows {
+  display: flex;
+  gap: 6px;
+}
+
+.timeline-arrows button,
+.timeline-show-all {
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  color: var(--ink);
+  background: transparent;
+  cursor: pointer;
+}
+
+.timeline-arrows button {
+  width: 30px;
+  height: 30px;
+}
+
+.timeline-arrows button:disabled {
+  opacity: 0.3;
+  cursor: default;
+}
+
+.target-timeline ol {
+  display: flex;
+  margin: 0;
+  padding: 0 0 6px;
+  gap: 10px;
+  overflow-x: auto;
+  list-style: none;
+}
+
+.target-timeline li button {
+  display: grid;
+  width: 84px;
+  gap: 6px;
+  padding: 0;
+  border: 0;
+  color: var(--muted);
+  background: none;
+  cursor: pointer;
+  font-size: 0.62rem;
+  letter-spacing: 0.08em;
+  text-align: center;
+}
+
+.target-timeline li img {
+  width: 84px;
+  height: 64px;
+  border: 1px solid var(--line);
+  object-fit: cover;
+  opacity: 0.6;
+}
+
+.target-timeline li button:hover img,
+.target-timeline li button.current img {
+  border-color: var(--accent);
+  opacity: 1;
+}
+
+.target-timeline li button.current {
+  color: var(--accent);
+}
+
+.timeline-show-all {
+  margin-top: 14px;
+  padding: 8px 14px;
+  font-size: 0.65rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
 .panorama {
   position: relative;
   width: 100%;

@@ -43,6 +43,20 @@ For example:
 newest first. Pictures without a date are still displayed after dated work, in
 their existing order in `content/media.ts`.
 
+## Target timelines
+
+Pictures of the same target can be linked with a top-level `targetId`:
+
+```ts
+{ slug: "andromeda", targetId: "m31", /* ... */ }
+```
+
+Register each id and its display name once in the `targets` object in
+`content/media.ts`. Linked pictures show a timeline strip (newest first, with
+earlier/later arrows) in the viewer, and the gallery gains a target dropdown that
+filters to that target, newest first. Targets with only one picture are hidden
+from the dropdown and show no strip.
+
 ## Acquisition and integration
 
 Use `acquisition` for how the data was captured and `integration` for the

@@ -4,7 +4,13 @@
 
 import dynamic from "next/dynamic";
 import { Fragment, useEffect, useMemo, useRef, useState } from "react";
-import type { MediaCategory, MediaItem } from "@/content/media";
+import {
+  getTargetTimeline,
+  targets,
+  type MediaCategory,
+  type MediaItem,
+  type TargetId,
+} from "@/content/media";
 
 const PanoramaViewer = dynamic(() => import("./panorama-viewer"), {
   ssr: false,
@@ -38,6 +44,83 @@ function formatCapturedAt(value: string) {
     ...(day ? { day: "numeric" as const } : {}),
     timeZone: "UTC",
   }).format(new Date(Date.UTC(year, month - 1, day ?? 1)));
+}
+
+function thumbPath(item: MediaItem) {
+  return item.kind === "video"
+    ? `/media/videos/${item.slug}/poster.webp`
+    : imagePath(item, item.widths[0]);
+}
+
+function TargetTimeline({
+  item,
+  items,
+  onSelect,
+  onShowAll,
+}: {
+  item: MediaItem;
+  items: MediaItem[];
+  onSelect: (slug: string) => void;
+  onShowAll: (targetId: TargetId) => void;
+}) {
+  if (!item.targetId) return null;
+  const timeline = getTargetTimeline(items, item.targetId);
+  if (timeline.length < 2) return null;
+
+  const index = timeline.findIndex((entry) => entry.slug === item.slug);
+  const previous = timeline[index + 1];
+  const next = timeline[index - 1];
+
+  return (
+    <nav className="target-timeline" aria-label="Same target over time">
+      <div className="timeline-heading">
+        <span>
+          {targets[item.targetId]} · {index + 1} of {timeline.length}
+        </span>
+        <span className="timeline-arrows">
+          <button
+            type="button"
+            disabled={!previous}
+            onClick={() => previous && onSelect(previous.slug)}
+            aria-label="Earlier picture of this target"
+          >
+            ←
+          </button>
+          <button
+            type="button"
+            disabled={!next}
+            onClick={() => next && onSelect(next.slug)}
+            aria-label="Later picture of this target"
+          >
+            →
+          </button>
+        </span>
+      </div>
+      <ol>
+        {timeline.map((entry) => (
+          <li key={entry.slug}>
+            <button
+              type="button"
+              className={entry.slug === item.slug ? "current" : undefined}
+              aria-current={entry.slug === item.slug ? "true" : undefined}
+              aria-label={`${entry.title}${entry.capturedAt ? `, ${formatCapturedAt(entry.capturedAt)}` : ""}`}
+              onClick={() => onSelect(entry.slug)}
+            >
+              <img src={thumbPath(entry)} alt="" loading="lazy" />
+              <span>{entry.capturedAt?.slice(0, 4) ?? "Undated"}</span>
+            </button>
+          </li>
+        ))}
+      </ol>
+      <button
+        type="button"
+        className="timeline-show-all"
+        onClick={() => onShowAll(item.targetId!)}
+      >
+        Show in gallery
+      </button>
+    </nav>
+  );
 }
 
 function VideoPreview({ item }: { item: MediaItem }) {
@@ -226,10 +309,16 @@ function LightboxMedia({ item }: { item: MediaItem }) {
 
 function MediaDialog({
   item,
+  items,
   onDismiss,
+  onSelect,
+  onShowTarget,
 }: {
   item: MediaItem;
+  items: MediaItem[];
   onDismiss: () => void;
+  onSelect: (slug: string) => void;
+  onShowTarget: (targetId: TargetId) => void;
 }) {
   const dialogRef = useRef<HTMLDialogElement>(null);
 
@@ -240,6 +329,10 @@ function MediaDialog({
   }, []);
 
   const close = () => dialogRef.current?.close();
+  const showTarget = (targetId: TargetId) => {
+    onShowTarget(targetId);
+    close();
+  };
 
   return (
     <dialog
@@ -275,6 +368,12 @@ function MediaDialog({
           <h2>{item.title}</h2>
           <p>{item.description}</p>
           <DetailList item={item} />
+          <TargetTimeline
+            item={item}
+            items={items}
+            onSelect={onSelect}
+            onShowAll={showTarget}
+          />
         </aside>
       </div>
     </dialog>
@@ -283,13 +382,15 @@ function MediaDialog({
 
 export default function Gallery({ items }: { items: MediaItem[] }) {
   const [filter, setFilter] = useState<(typeof filters)[number]>("All");
+  const [targetId, setTargetId] = useState<TargetId | null>(null);
   const [selectedSlug, setSelectedSlug] = useState<string | null>(null);
   const visibleItems = useMemo(
     () => {
-      const filtered =
-        filter === "All"
-        ? items
-        : items.filter((item) => item.category === filter);
+      const filtered = items.filter(
+        (item) =>
+          (filter === "All" || item.category === filter) &&
+          (!targetId || item.targetId === targetId),
+      );
       const curatedOrder = new Map(
         items.map((item, index) => [item.slug, index]),
       );
@@ -304,9 +405,12 @@ export default function Gallery({ items }: { items: MediaItem[] }) {
         );
       });
     },
-    [filter, items],
+    [filter, items, targetId],
   );
   const selected = items.find((item) => item.slug === selectedSlug);
+  const timelineTargets = (Object.keys(targets) as TargetId[]).filter(
+    (id) => getTargetTimeline(items, id).length > 1,
+  );
 
   return (
     <>
@@ -322,6 +426,24 @@ export default function Gallery({ items }: { items: MediaItem[] }) {
             {option}
           </button>
         ))}
+        {timelineTargets.length > 0 && (
+          <select
+            className="target-select"
+            value={targetId ?? ""}
+            onChange={(event) => {
+              setTargetId((event.target.value || null) as TargetId | null);
+              setFilter("All");
+            }}
+            aria-label="Filter by target"
+          >
+            <option value="">All targets</option>
+            {timelineTargets.map((id) => (
+              <option key={id} value={id}>
+                {targets[id]}
+              </option>
+            ))}
+          </select>
+        )}
       </div>
 
       <div className="gallery-grid">
@@ -374,6 +496,12 @@ export default function Gallery({ items }: { items: MediaItem[] }) {
       {selected && (
         <MediaDialog
           item={selected}
+          items={items}
+          onSelect={setSelectedSlug}
+          onShowTarget={(id) => {
+            setTargetId(id);
+            setFilter("All");
+          }}
           onDismiss={() => setSelectedSlug(null)}
         />
       )}

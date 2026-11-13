@@ -3,6 +3,16 @@ import generatedMedia from "./generated-media.json";
 export type MediaCategory = "Deep sky" | "Nightscapes" | "Motion";
 export type MediaKind = "image" | "video" | "panorama";
 
+export const targets = {
+  m31: "Andromeda Galaxy",
+  m42: "Orion Nebula",
+  m101: "Pinwheel Galaxy",
+  "veil-nebula": "Veil Nebula",
+  "galactic-core": "Milky Way core",
+} as const;
+
+export type TargetId = keyof typeof targets;
+
 export interface CaptureDetails {
   target?: string;
   acquisition?: string;
@@ -23,6 +33,7 @@ export interface MediaItem {
   widths: number[];
   duration?: number;
   featured?: boolean;
+  targetId?: TargetId;
   capturedAt?: string;
   details?: CaptureDetails;
 }
@@ -35,6 +46,7 @@ type EditorialItem = Omit<
 const editorial: EditorialItem[] = [
   {
     slug: "galactic-panorama",
+    targetId: "galactic-core",
     kind: "panorama",
     category: "Nightscapes",
     title: "Under the Milky Way",
@@ -50,6 +62,7 @@ const editorial: EditorialItem[] = [
   },
   {
     slug: "veil-nebula",
+    targetId: "veil-nebula",
     kind: "image",
     category: "Deep sky",
     title: "Eastern Veil Nebula",
@@ -67,6 +80,7 @@ const editorial: EditorialItem[] = [
   },
   {
     slug: "andromeda",
+    targetId: "m31",
     kind: "image",
     category: "Deep sky",
     title: "Andromeda Galaxy",
@@ -111,6 +125,7 @@ const editorial: EditorialItem[] = [
   },
   {
     slug: "milky-way",
+    targetId: "galactic-core",
     kind: "image",
     category: "Nightscapes",
     title: "Galactic Core",
@@ -167,6 +182,7 @@ const editorial: EditorialItem[] = [
   },
   {
     slug: "milky-way-portrait",
+    targetId: "galactic-core",
     kind: "image",
     category: "Nightscapes",
     title: "Across the Night",
@@ -262,6 +278,7 @@ const editorial: EditorialItem[] = [
   },
   {
     slug: "galactic-arch",
+    targetId: "galactic-core",
     kind: "image",
     category: "Nightscapes",
     title: "Galactic Arch",
@@ -304,6 +321,7 @@ const editorial: EditorialItem[] = [
   },
   {
     slug: "orion-nebula-2024",
+    targetId: "m42",
     kind: "image",
     category: "Deep sky",
     title: "Orion Nebula",
@@ -315,6 +333,7 @@ const editorial: EditorialItem[] = [
   },
   {
     slug: "pinwheel-galaxy",
+    targetId: "m101",
     kind: "image",
     category: "Deep sky",
     title: "Pinwheel Galaxy",
@@ -385,6 +404,7 @@ const editorial: EditorialItem[] = [
   },
   {
     slug: "orion-nebula-hdr",
+    targetId: "m42",
     kind: "image",
     category: "Deep sky",
     title: "Orion Nebula HDR",
@@ -402,6 +422,7 @@ const editorial: EditorialItem[] = [
   },
   {
     slug: "first-galactic-core",
+    targetId: "galactic-core",
     kind: "image",
     category: "Nightscapes",
     title: "First Galactic Core",
@@ -416,6 +437,7 @@ const editorial: EditorialItem[] = [
   },
   {
     slug: "milky-way-2023-reprocess",
+    targetId: "galactic-core",
     kind: "image",
     category: "Nightscapes",
     title: "Milky Way Reprocessed",
@@ -427,6 +449,7 @@ const editorial: EditorialItem[] = [
   },
   {
     slug: "milky-way-and-trees",
+    targetId: "galactic-core",
     kind: "image",
     category: "Nightscapes",
     title: "Milky Way and Trees",
@@ -452,6 +475,7 @@ const editorial: EditorialItem[] = [
   },
   {
     slug: "wide-field-andromeda",
+    targetId: "m31",
     kind: "image",
     category: "Nightscapes",
     title: "Andromeda, Wide Field",
@@ -467,6 +491,7 @@ const editorial: EditorialItem[] = [
   },
   {
     slug: "pinwheel-galaxy-2024",
+    targetId: "m101",
     kind: "image",
     category: "Deep sky",
     title: "Pinwheel Galaxy, First Attempt",
@@ -481,6 +506,7 @@ const editorial: EditorialItem[] = [
   },
   {
     slug: "full-veil-nebula-2024",
+    targetId: "veil-nebula",
     kind: "image",
     category: "Deep sky",
     title: "The Veil, Wide Field",
@@ -558,3 +584,12 @@ export const mediaItems: MediaItem[] = editorial.map((item) => {
     duration: "duration" in generated ? generated.duration : undefined,
   };
 });
+
+export function getTargetTimeline(
+  items: MediaItem[],
+  targetId: TargetId,
+): MediaItem[] {
+  return items
+    .filter((item) => item.targetId === targetId)
+    .sort((a, b) => (b.capturedAt ?? "").localeCompare(a.capturedAt ?? ""));
+}
